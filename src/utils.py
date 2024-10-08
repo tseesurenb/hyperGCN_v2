@@ -59,7 +59,7 @@ def print_metrics(recalls, precs, f1s, ncdg, max_indices, stats):
         print(f"{name:>8}: {values_str} | {mean_str}, {std_str}")
     
     print(f"{35*'-'}")    
-    print(f"   Max NDCG occurs at epoch {br}{(max_indices) * config["epochs_per_eval"]}{rs}")
+    print(f"   Max NDCG occurs at epoch {br}{(max_indices) * config['epochs_per_eval']}{rs}")
 
 def get_metrics(user_Embed_wts, item_Embed_wts, n_users, n_items, train_df, test_df, K, device, batch_size=100):
     
