@@ -321,17 +321,17 @@ def multiple_neg_uniform_sample(train_df, full_adj_list, n_usr):
     
     
     #For each user, generate N negative samples
-    # neg_items_list = np.array([
-    #     np.random.choice(full_adj_list[u]['neg_items'], size=N, replace=True) 
-    #     for u in users
-    # ])
+    neg_items_list = np.array([
+         np.random.choice(full_adj_list[u]['neg_items'], size=config["neg_samples"], replace=True) 
+         for u in users
+     ])
     
     #neg_items_list = np.array([get_random_slice(full_adj_list[u]['neg_items'], N) for u in users])    
     
-    neg_items_list = np.array([
-    full_adj_list[u]['neg_item_batches'][random.randint(0, full_adj_list[u]['neg_batches'] - 2)]
-    for u in users
-    ])
+    #neg_items_list = np.array([
+    #full_adj_list[u]['neg_item_batches'][random.randint(0, full_adj_list[u]['neg_batches'] - 2)]
+    #for u in users
+    #])
 
     
     # Adjust positive and negative item indices by adding n_usr
