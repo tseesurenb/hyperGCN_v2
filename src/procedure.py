@@ -453,8 +453,9 @@ def run_experiment_2(o_train_df, o_test_df, g_seed=42, exp_n = 1, device='cpu', 
     all_users = _train_df['user_id'].unique()
     all_items = _train_df['item_id'].unique()
      
-    train_adj_list = ut.make_adj_list(_train_df, all_items)
-
+    #train_adj_list = ut.make_adj_list(_train_df, all_items)
+    train_adj_list = ut.make_adj_list_batched(_train_df, all_items, config['neg_samples'])
+    
     if config['edge'] == 'bi':
         
         u_t = torch.LongTensor(_train_df.user_id)

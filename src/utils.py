@@ -248,6 +248,38 @@ def make_adj_list(data, all_items):
     return full_adj_list_dict
 
 
+def make_adj_list_batched(data, all_items, batch_size):
+    all_items_set = set(all_items)
+
+    # Group by user_id and aggregate item_ids into lists (positive items)
+    pos_items = data.groupby('user_id')['item_id'].agg(list)
+
+    # Compute neg_items by subtracting the pos_items from all_items for each user
+    neg_items = pos_items.apply(lambda pos: list(all_items_set.difference(pos)))
+
+    # Create a dictionary with user_id as the key and a sub-dictionary with pos_items and neg_item_batches
+    full_adj_list_dict = {}
+    for user_id in pos_items.index:
+        pos_item_list = pos_items[user_id]
+        neg_item_list = neg_items[user_id]
+
+        # Divide neg_items into batches of size batch_size
+        neg_item_batches = [neg_item_list[i:i + batch_size] for i in range(0, len(neg_item_list), batch_size)]
+        
+        # Add user_id, pos_items, and the neg_item_batches to the dictionary
+        full_adj_list_dict[user_id] = {
+            'pos_items': pos_item_list,
+            'neg_item_batches': neg_item_batches  # Store all batches in a list
+        }
+
+    # Clear unnecessary variables from memory
+    del pos_items, neg_items, all_items_set
+
+    return full_adj_list_dict
+
+
+
+
 def neg_uniform_sample(train_df, full_adj_list, n_usr):
     interactions = train_df.to_numpy()
     users = interactions[:, 0].astype(int)
@@ -287,7 +319,12 @@ def multiple_neg_uniform_sample(train_df, full_adj_list, n_usr, N=300):
     #     for u in users
     # ])
     
-    neg_items_list = np.array([get_random_slice(full_adj_list[u]['neg_items'], N) for u in users])    
+    #neg_items_list = np.array([get_random_slice(full_adj_list[u]['neg_items'], N) for u in users])    
+    
+    neg_items_list = np.array([
+    full_adj_list[u]['neg_item_batches'][random.randint(0, len(full_adj_list[u]['neg_item_batches']) - 1)] 
+    for u in users
+    ])
     
     # Adjust positive and negative item indices by adding n_usr
     pos_items = [item + n_usr for item in pos_items]
