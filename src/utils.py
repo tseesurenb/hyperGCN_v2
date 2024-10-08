@@ -327,13 +327,6 @@ def multiple_neg_uniform_sample(train_df, full_adj_list, n_usr):
     
     #neg_items_list = np.array([get_random_slice(full_adj_list[u]['neg_items'], N) for u in users])    
     
-    # print('in multiple_neg_uniform_sample')
-    # for i in range(10):
-    #    print(f"Full Adj List Dict: {full_adj_list[i]['neg_batches']}, {len(full_adj_list[i]['neg_item_batches'][full_adj_list[i]['neg_batches'] - 2])}")  
-    # sys.exit()
-    
-    #neg_items_list = [full_adj_list[u]['neg_item_batches'][random.randint(0, full_adj_list[u]['neg_batches'] - 1)] for u in users]
-    
     neg_items_list = np.array([
     full_adj_list[u]['neg_item_batches'][random.randint(0, full_adj_list[u]['neg_batches'] - 2)]
     for u in users
