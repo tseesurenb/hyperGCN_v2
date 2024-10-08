@@ -182,6 +182,8 @@ def train_and_eval(epochs, model, optimizer, train_df, train_neg_adj_list, test_
     
         final_loss_list, bpr_loss_list, reg_loss_list  = [], [], []
                 
+        start = time.time()        
+                
         if config['full_sample'] == True:
             S = ut.full_uniform_sample(train_df, train_neg_adj_list, n_users)
         else:
@@ -190,6 +192,8 @@ def train_and_eval(epochs, model, optimizer, train_df, train_neg_adj_list, test_
             else:
                 S = ut.multiple_neg_uniform_sample(train_df, train_neg_adj_list, n_users, N=config['neg_samples'])
         
+        end = time.time()
+        print(f"Time taken to sample: {end-start}")
         
         #S = ut.full_uniform_sample(train_df, train_neg_adj_list, n_users)
 
