@@ -1,0 +1,14 @@
+HyperGCN:
+1. Confirm if NCDG is correctly calculated. - done.
+2. Define the toy story - done.
+3. Complete Introduction - done.
+
+3. Define dataset
+4. Define baselines
+5. Define related works
+6. Define algorithm to set top-K
+7. Make sure if 20% for test or 10% for test.
+8. Make sure if 10-core settings applied on the existing dataset.
+
+tempLGCN:
+1. Define the toy story

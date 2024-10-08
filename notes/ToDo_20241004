@@ -1,0 +1,27 @@
+
+HyperGCN
+1. Toy Story
+2. Choosing baseline: 
+	ItemKNN (TOIS, 2004)
+	EASE (WWW, 2019)
+	mult-VAE
+	GRU4Rec (ICLR, 2016)
+	NGCF
+	LightGCN (2019)
+	SGL (2021)
+	BSPM-EM - Blurring-Sharpening Process Models for Collaborative Filtering - 2023
+
+3. Choosing relevant works
+	
+	Hypergraph Contrastive Collaborative Filtering - 2022
+	Neighborhood-Enhanced Supervised Contrastive Learning for Collaborative Filtering - 2024
+	MGDCF: Distance Learning via Markov Graph Diffusion for Neural Collaborative Filtering - 2022
+	Sapling Similarity: a performing and interpretable memory-based tool for recommendation - 2023
+	Blurring-Sharpening Process Models for Collaborative Filtering - 2023
+	SGL - 2021
+	Multi-Graph Convolution Collaborative Filtering - 2020, IEEE ICDM 2019
+	
+
+4. Adding attention to hyperGCN 
+5. Datasets: Yelp2018, LastFM, ml-100k, ml-1m (Alibaba-iFashion, Amazon book)
+

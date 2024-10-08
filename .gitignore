@@ -1,0 +1,6 @@
+*.csv
+*.pt
+data/
+models/
+pre_proc/
+backup/
