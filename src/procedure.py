@@ -188,7 +188,7 @@ def train_and_eval(epochs, model, optimizer, train_df, train_neg_adj_list, test_
             if config['neg_samples'] == 1:
                 S = ut.neg_uniform_sample(train_df, train_neg_adj_list, n_users)
             else:
-                S = ut.multiple_neg_uniform_sample(train_df, train_neg_adj_list, n_users, N=config['neg_samples'])
+                S = ut.multiple_neg_uniform_sample(train_df, train_neg_adj_list, n_users)
         
 
         

@@ -248,7 +248,7 @@ def make_adj_list(data, all_items):
     return full_adj_list_dict
 
 
-def make_adj_list_batched(data, all_items, batch_size):
+def make_adj_list_batched(data, all_items, neg_sample_size):
     all_items_set = set(all_items)
 
     # Group by user_id and aggregate item_ids into lists (positive items)
@@ -259,19 +259,25 @@ def make_adj_list_batched(data, all_items, batch_size):
 
     # Create a dictionary with user_id as the key and a sub-dictionary with pos_items and neg_item_batches
     full_adj_list_dict = {}
+    j = 0
     for user_id in pos_items.index:
         pos_item_list = pos_items[user_id]
         neg_item_list = neg_items[user_id]
 
         # Divide neg_items into batches of size batch_size
-        neg_item_batches = [neg_item_list[i:i + batch_size] for i in range(0, len(neg_item_list), batch_size)]
-        
+        neg_item_batches = [neg_item_list[i:i + neg_sample_size] for i in range(0, len(neg_item_list), neg_sample_size)]
+          
         # Add user_id, pos_items, and the neg_item_batches to the dictionary
         full_adj_list_dict[user_id] = {
             'pos_items': pos_item_list,
+            'neg_batches': len(neg_item_batches),
             'neg_item_batches': neg_item_batches  # Store all batches in a list
         }
 
+    #for i in range(10):
+    #    print(f"Full Adj List Dict: {full_adj_list_dict[i]['neg_batches']}, {neg_sample_size}, {len(full_adj_list_dict[i]['neg_item_batches'][full_adj_list_dict[i]['neg_batches'] - 2])}")
+        #print(f"Full Adj List Dict: {full_adj_list_dict[i]['pos_items']}")    
+    #sys.exit()
     # Clear unnecessary variables from memory
     del pos_items, neg_items, all_items_set
 
@@ -307,7 +313,7 @@ def get_random_slice(items, N):
     start = np.random.randint(len(items) - N + 1)  # Adjust to start within bounds
     return items[start:start + N]
 
-def multiple_neg_uniform_sample(train_df, full_adj_list, n_usr, N=300):
+def multiple_neg_uniform_sample(train_df, full_adj_list, n_usr):
     interactions = train_df.to_numpy()
     users = interactions[:, 0].astype(int)
     pos_items = interactions[:, 1].astype(int)
@@ -321,10 +327,18 @@ def multiple_neg_uniform_sample(train_df, full_adj_list, n_usr, N=300):
     
     #neg_items_list = np.array([get_random_slice(full_adj_list[u]['neg_items'], N) for u in users])    
     
+    # print('in multiple_neg_uniform_sample')
+    # for i in range(10):
+    #    print(f"Full Adj List Dict: {full_adj_list[i]['neg_batches']}, {len(full_adj_list[i]['neg_item_batches'][full_adj_list[i]['neg_batches'] - 2])}")  
+    # sys.exit()
+    
+    #neg_items_list = [full_adj_list[u]['neg_item_batches'][random.randint(0, full_adj_list[u]['neg_batches'] - 1)] for u in users]
+    
     neg_items_list = np.array([
-    full_adj_list[u]['neg_item_batches'][random.randint(0, len(full_adj_list[u]['neg_item_batches']) - 1)] 
+    full_adj_list[u]['neg_item_batches'][random.randint(0, full_adj_list[u]['neg_batches'] - 2)]
     for u in users
     ])
+
     
     # Adjust positive and negative item indices by adding n_usr
     pos_items = [item + n_usr for item in pos_items]
