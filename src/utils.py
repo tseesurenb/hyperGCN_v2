@@ -264,6 +264,7 @@ def make_adj_list_batched(data, all_items, neg_sample_size):
         pos_item_list = pos_items[user_id]
         neg_item_list = neg_items[user_id]
 
+        random.shuffle(neg_item_list)
         # Divide neg_items into batches of size batch_size
         neg_item_batches = [neg_item_list[i:i + neg_sample_size] for i in range(0, len(neg_item_list), neg_sample_size)]
           
